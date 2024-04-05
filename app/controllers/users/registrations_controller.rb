@@ -21,6 +21,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  # TODO: Implement the ff:
+  # 1. Send confirmation email after sign up
+  # 2. Methods for updating User Info
+  # 3. Methods for deleting User Account
+  # 4. Methods for changing User Password
+
   # GET /resource/sign_up
   # def new
   #   super
