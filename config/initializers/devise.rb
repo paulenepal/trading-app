@@ -14,7 +14,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'e7aa09b1e35c975b1eea5d47baa9fdcda962697b480f7e9f5a694f4919ae424ccc12940a6506bdb7f6705252ad2a4e76ed096307d06b637406ede8a60af25c6d'
+  # config.secret_key = '7300c68b07bcb18f29b63fd17b5c93dc29fe13555b965206b9bb244ad83c722ca86c09a24fa7aeea138b8c9f0f4ef7f5ba1bf76abb700dde9b183caabd5e0edf'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -126,7 +126,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '3b7136a0fa797f180b1e3ec3d74d53a55556bcf7836e0e0458f9cc8bd370f1807008e5ecb876623bfec3b84be608f84226bbc0fc2aa2ee1f0362b4a3d80de497'
+  # config.pepper = '98e1a34bc9fb39193e9727de24d49f67a7faf12a74e9dcec977bee81a5117b1ddce8e10c3c6a13118473d89e2574a5d122d85762835fe8c14db5b99d3f26fb20'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -265,6 +265,8 @@ Devise.setup do |config|
   # The "*/*" below is required to match Internet Explorer requests.
   # config.navigational_formats = ['*/*', :html, :turbo_stream]
 
+  config.navigational_formats = []
+
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
 
@@ -310,4 +312,21 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+
+  # ==> JWT Configuration
+  # On every login POST request it should append the JWT token to the ‘Authorization’ header
+  # as “Bearer + token” when there’s a successful response sent back,
+  # and on a logout DELETE request, the token should be revoked.
+
+  config.jwt do |jwt|
+    jwt.secret = Rails.application.credentials.devise_jwt_secret_key!
+    jwt.dispatch_requests = [
+      ['POST', %r{^/login$}]
+    ]
+    jwt.revocation_requests = [
+      ['DELETE', %r{^/logout$}]
+    ]
+    jwt.expiration_time = 12.hours.to_i
+  end
+
 end
