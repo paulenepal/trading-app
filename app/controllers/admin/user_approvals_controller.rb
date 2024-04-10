@@ -17,7 +17,7 @@ class Admin::UserApprovalsController < ApplicationController
     user = User.find(params[:id])
     user.update(role: :trader)
 
-    UserMailer.account_approved_email(user).deliver_now
+    UserMailer.welcome_email(user).deliver_now
 
     render json: user, status: :ok
   rescue ActiveRecord::RecordNotFound

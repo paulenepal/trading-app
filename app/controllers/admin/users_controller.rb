@@ -37,7 +37,7 @@ class Admin::UsersController < ApplicationController
     new_user.role = :trader # sets role to trader automatically
 
     if new_user.save
-      UserMailer.account_approved_email(new_user).deliver_now
+      UserMailer.welcome_email(new_user).deliver_now
       render json: {
         status: {code: 200, message: 'Signed up successfully.'},
         data: UserSerializer.new(new_user).serializable_hash[:data][:attributes]
