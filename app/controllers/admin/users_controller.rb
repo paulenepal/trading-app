@@ -1,10 +1,10 @@
 class Admin::UsersController < ApplicationController
   before_action :authenticate_admin
-  before_action :set_user, only: [:show, :updated]
+  before_action :set_user, only: [:show, :update]
 
-  # chore 2: refactor responses [keep your code DRY]
-  # chore 3: implement UserMailer
+  # chore: refactor responses [keep your code DRY]
 
+  # GET "/admin/users"
   def index
     users = User.all
     render json: {
@@ -15,6 +15,7 @@ class Admin::UsersController < ApplicationController
     render json: { error: 'An unexpected error occurred' }, status: :internal_server_error
   end
 
+  # GET "/admin/users/:id"
   def show
     # before action here
     render json: {
@@ -28,6 +29,7 @@ class Admin::UsersController < ApplicationController
     render json: { error: 'An unexpected error occurred' }, status: :internal_server_error
   end
 
+  # POST "/admin/users"
   def create
     new_user = User.new(user_params)
     # new_user.password = Rails.application.credentials.user.default_password
@@ -35,7 +37,7 @@ class Admin::UsersController < ApplicationController
     new_user.role = :trader # sets role to trader automatically
 
     if new_user.save
-      # UserMailer.with(user: new_user).welcome_email.deliver_now
+      UserMailer.account_approved_email(new_user).deliver_now
       render json: {
         status: {code: 200, message: 'Signed up successfully.'},
         data: UserSerializer.new(new_user).serializable_hash[:data][:attributes]
@@ -50,6 +52,7 @@ class Admin::UsersController < ApplicationController
     render json: { error: 'An unexpected error occurred' }, status: :internal_server_error
   end
 
+  # PATCH "/admin/users/:id"
   def update
     # before action here
     if user.update(user_params)
