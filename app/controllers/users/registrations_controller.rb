@@ -3,8 +3,8 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-  include RackSessionsFix
-  respond_to :json
+  # include RackSessionsFix
+  # respond_to :json
 
   private
 
@@ -61,7 +61,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
+
+  def sign_up_params
+    params.require(:user).permit(:email, :password, :first_name, :middle_name, :last_name, :username, :birthday, :role)
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_up_params
