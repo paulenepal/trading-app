@@ -18,4 +18,13 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  namespace :admin do
+    resources :users
+    resources :user_approvals
+  end
+
+  # IEX Routes
+  get 'watchlist/:symbol', to: 'watchlist#show'
+
 end
