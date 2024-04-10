@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
+  before_save :email_confirmed, if: :confirmed_at_changed?
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -12,9 +14,15 @@ class User < ApplicationRecord
   # feat: if may approved trader, do we need to include rejected traders here sa role?
   # or covered na ng pending trader? 
 
-  scope :pending, -> { where(role: :pending_trader) } # [chore] refactor: need to include scope here na dapat ung confirmed emails lang makikita ni admin sa pending trader
+  scope :pending, -> { where(role: :pending_trader, confirmed_email: :true) }
 
   validates :email, :first_name, :last_name, :birthday, presence: true
   validates :username, presence: true, uniqueness: true
+
+  private
+
+  def email_confirmed
+    self.confirmed_email = true
+  end
 
 end
