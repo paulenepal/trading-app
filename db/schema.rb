@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_08_102713) do
+# ActiveRecord::Schema[7.1].define(version: 2024_04_08_102713) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_12_115908) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "transactions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "iex_stock_symbol", null: false
+    t.integer "transaction_type"
+    t.integer "quantity"
+    t.decimal "price", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -38,6 +49,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_08_102713) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "wallets", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.decimal "balance", precision: 10, scale: 2, default: "0.0"
+    t.decimal "decimal", precision: 10, scale: 2, default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
