@@ -15,8 +15,10 @@ admin = User.new(
   email: 'admin@app.com',
   password: 'admin1234', # Set your desired password here
   password_confirmation: 'admin1234', # Confirm the password
+  username: 'admin',
   first_name: 'Admin',
   last_name: 'User',
+  birthday: '1990-01-01',
   role: 1,
   confirmed_at: Time.now # Automatically confirm the account
 )

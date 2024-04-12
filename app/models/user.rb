@@ -26,13 +26,10 @@ class User < ApplicationRecord
   def email_confirmed
     self.confirmed_email = true
   end
-
-end
-  private
-
   def create_wallet_after_signup
     if role == 0
       Wallet.create(user_id: id, balance: 50000)
     end
   end
 end
+
