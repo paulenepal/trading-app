@@ -2,8 +2,10 @@ class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
   before_save :email_confirmed, if: :confirmed_at_changed?
-  has_one :wallet, dependent: :destroy
-  after_create :create_wallet_after_signup
+  # has_one :wallet, dependent: :destroy
+  # after_create :create_wallet_after_signup
+  has_many :transactions, dependent: :destroy
+  has_many :stocks
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
