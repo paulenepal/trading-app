@@ -1,16 +1,27 @@
 class TransactionsController < ApplicationController
-  
+  before_action :authenticate_user
   before_action :set_transaction, only: [:show, :update, :destroy]
 
   # GET /transactions
   def index
-    @transactions = Transaction.all
-    render json: @transactions
+    if @transactions.empty?
+      render json: { message: 'No transactions found' }, status: :not_found
+    else
+      render json: @transactions
+    end
+
+  rescue StandardError => e
+    render json: { error: 'An unexpected error occurred' }, status: :internal_server_error
   end
 
   # GET /transactions/:id
   def show
     render json: @transaction
+
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: 'Transaction not found' }, status: :not_found
+  rescue StandardError => e
+    render json: { error: 'An unexpected error occurred' }, status: :internal_server_error
   end
 
   # POST /transactions
@@ -21,6 +32,9 @@ class TransactionsController < ApplicationController
     else
       render json: @transaction.errors, status: :unprocessable_entity
     end
+    
+  rescue StandardError => e
+    render json: { error: 'An unexpected error occurred' }, status: :internal_server_error
   end
 
   # PATCH/PUT /transactions/:id
@@ -30,12 +44,9 @@ class TransactionsController < ApplicationController
     else
       render json: @transaction.errors, status: :unprocessable_entity
     end
-  end
 
-  # DELETE /transactions/:id
-  def destroy
-    @transaction.destroy
-    head :no_content
+  rescue StandardError => e
+    render json: { error: 'An unexpected error occurred' }, status: :internal_server_error
   end
 
   private
