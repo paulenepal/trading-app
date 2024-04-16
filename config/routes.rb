@@ -24,7 +24,12 @@ Rails.application.routes.draw do
     resources :user_approvals
   end
 
-  # IEX Routes
+  resources :transactions do
+    post 'buy', on: :collection
+    post 'sell', on: :collection
+  end
+
+  # IEX test routes
   get 'watchlist/:symbol', to: 'watchlist#show'
 
 end
