@@ -54,4 +54,4 @@ gem "jsonapi-serializer" ## serializer
 
 gem 'iex-ruby-client'
 
-gem 'httparty'
+gem 'faraday'
