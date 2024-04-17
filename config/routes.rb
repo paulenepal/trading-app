@@ -29,6 +29,12 @@ Rails.application.routes.draw do
     post 'sell', on: :collection
   end
 
+  resources :user_balances do
+    post 'add_balance', on: :collection
+    post 'deduct_balance', on: :collection
+    get 'first_time_free_deposit', on: :collection
+  end
+
   # IEX test routes
   get 'watchlist/:symbol', to: 'watchlist#show'
 
