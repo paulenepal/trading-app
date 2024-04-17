@@ -18,4 +18,25 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  namespace :admin do
+    resources :users
+    resources :user_approvals
+  end
+
+  resources :transactions do
+    post 'buy', on: :collection
+    post 'sell', on: :collection
+  end
+
+  resources :user_balances do
+    get 'index', on: :collection
+    get 'show', on: :collection
+    post 'add_balance', on: :collection
+    post 'deduct_balance', on: :collection
+  end
+
+  # IEX test routes
+  get 'watchlist/:symbol', to: 'watchlist#show'
+
 end

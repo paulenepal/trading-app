@@ -51,3 +51,7 @@ gem "devise", "~> 4.9"
 gem "devise-jwt"
 
 gem "jsonapi-serializer" ## serializer
+
+gem 'iex-ruby-client'
+
+gem 'faraday'

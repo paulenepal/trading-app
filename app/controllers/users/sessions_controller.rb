@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
-  # before_action :configure_sign_in_params, only: [:create]
-  include RackSessionsFix
-  respond_to :json
+  #before_action :configure_sign_in_params, only: [:create]
+
+  # include RackSessionsFix
+  # respond_to :json
 
   private
 
@@ -18,7 +19,8 @@ class Users::SessionsController < Devise::SessionsController
   
   def respond_to_on_destroy
     if request.headers['Authorization'].present?
-      jwt_payload = JWT.decode(request.headers['Authorization'].split(' ').last, Rails.application.credentials.devise_jwt_secret_key!).first      current_user = User.find(jwt_payload['sub'])
+      jwt_payload = JWT.decode(request.headers['Authorization'].split(' ').last, Rails.application.credentials.devise_jwt_secret_key!).first
+      current_user = User.find(jwt_payload['sub'])
     end
     
     if current_user
@@ -47,6 +49,12 @@ class Users::SessionsController < Devise::SessionsController
   # DELETE /resource/sign_out
   # def destroy
   #   super
+  # end
+
+  # private
+
+  # def sign_in_params
+  #   params.require(:user).permit(:email, :first_name, :middle_name, :last_name, :username, :birthday, :role)
   # end
 
   # protected
