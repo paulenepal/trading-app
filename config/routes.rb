@@ -30,9 +30,10 @@ Rails.application.routes.draw do
   end
 
   resources :user_balances do
+    get 'index', on: :collection
+    get 'show', on: :collection
     post 'add_balance', on: :collection
     post 'deduct_balance', on: :collection
-    get 'first_time_free_deposit', on: :collection
   end
 
   # IEX test routes

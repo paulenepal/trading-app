@@ -2,6 +2,7 @@ class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
   before_save :email_confirmed, if: :confirmed_at_changed?
+  after_create :pre_deposit_balance
   # has_one :wallet, dependent: :destroy
   # after_create :create_wallet_after_signup
   has_many :transactions, dependent: :destroy
@@ -27,11 +28,6 @@ class User < ApplicationRecord
 
   def email_confirmed
     self.confirmed_email = true
-  end
-  def create_wallet_after_signup
-    if role == 0
-      Wallet.create(user_id: id, balance: 50000)
-    end
   end
 end
 

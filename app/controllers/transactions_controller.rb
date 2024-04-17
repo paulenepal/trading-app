@@ -1,7 +1,5 @@
 class TransactionsController < ApplicationController
   before_action :authenticate_user!
-  include RackSessionsFix
-  respond_to :json
 
   def buy
     transaction = Transaction.buy_shares!(current_user, transaction_params)

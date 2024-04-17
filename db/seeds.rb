@@ -19,7 +19,7 @@ admin = User.new(
   first_name: 'Admin',
   last_name: 'User',
   birthday: '1990-01-01',
-  role: 1,
+  role: 2,
   confirmed_at: Time.now # Automatically confirm the account
 )
 
@@ -27,3 +27,20 @@ admin.skip_confirmation_notification! # Skip sending confirmation email
 admin.save!
 
 puts 'Admin user created successfully.'
+
+user000 = User.new(
+  email: 'user000@app.com',
+  password: '1234567', # Set your desired password here
+  password_confirmation: '1234567', # Confirm the password
+  username: 'user000',
+  first_name: 'User',
+  last_name: '000',
+  birthday: '1990-01-01',
+  role: 1,
+  confirmed_at: Time.now # Automatically confirm the account
+)
+
+user000.skip_confirmation_notification! # Skip sending confirmation email
+user000.save!
+
+puts 'User000 user created successfully.'
