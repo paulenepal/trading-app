@@ -36,6 +36,10 @@ Rails.application.routes.draw do
     post 'deduct_balance', on: :collection
   end
 
+  resources :stocks, only: [:index, :show] do
+    post 'search', on: :collection
+  end
+
   # IEX test routes
   get 'watchlist/:symbol', to: 'watchlist#show'
 
