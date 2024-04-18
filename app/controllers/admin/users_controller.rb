@@ -32,7 +32,7 @@ class Admin::UsersController < ApplicationController
   # POST "/admin/users"
   def create
     new_user = User.new(user_params)
-    # new_user.password = Rails.application.credentials.user.default_password
+    new_user.password = Rails.application.credentials.user[:default_password]
     new_user.skip_confirmation!  # skips confirmation if user was created by Admin
     new_user.role = :trader # sets role to trader automatically
 
