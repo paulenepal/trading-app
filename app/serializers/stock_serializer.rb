@@ -1,6 +1,6 @@
 class StockSerializer
   include JSONAPI::Serializer
-  attributes :id, :symbol, :quantity, :latest_price, :profit_loss, :value
+  attributes :id, :symbol, :quantity, :latest_price, :profit_loss, :value, :ave_buy
 
   def latest_price
     object.latest_price
@@ -12,5 +12,9 @@ class StockSerializer
 
   def value
     object.value
+  end
+
+  def ave_buy
+    object.average_buy
   end
 end
