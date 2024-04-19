@@ -41,6 +41,9 @@ Rails.application.routes.draw do
   end
 
   # IEX test routes
-  get 'watchlist/:symbol', to: 'watchlist#show'
-
+  # get 'watchlist/:symbol', to: 'watchlist#show'
+  get 'watchlist', to: 'watchlist#index'
+  get 'watchlist/ohlc', to: 'watchlist#ohlc'
+  get 'watchlist/historical', to: 'watchlist#historical'
+  get 'watchlist/logo', to: 'watchlist#logo'
 end
