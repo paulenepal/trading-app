@@ -21,9 +21,8 @@ class Stock < ApplicationRecord
   end
 
   def latest_price
-    @client = IEX::Api::Client.new
-    @quote_data = @client.quote(symbol)
-    latest_price = @quote_data.latest_price
+    quote_data = IexStockService.fetch_quote(symbol)
+    latest_price = quote_data.latest_price
   end
 
   def ave_buy
@@ -43,10 +42,10 @@ class Stock < ApplicationRecord
     transactions = Transaction.where(symbol: symbol)
     return nil if transactions.empty?
 
-    avg_total_amount = transactions.sum(:total_amount)
+    total_amount = transactions.sum(:total_amount)
     total_quantity = self.quantity
   
-    avg_total_amount / total_quantity
+    total_amount / total_quantity
   end
 
 end
