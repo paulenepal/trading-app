@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :user_approvals
+    resources :user_transactions
   end
 
   resources :transactions do
@@ -40,10 +41,5 @@ Rails.application.routes.draw do
     post 'search', on: :collection
   end
 
-  # IEX test routes
-  # get 'watchlist/:symbol', to: 'watchlist#show'
   get 'watchlist', to: 'watchlist#index'
-  get 'watchlist/ohlc', to: 'watchlist#ohlc'
-  get 'watchlist/historical', to: 'watchlist#historical'
-  get 'watchlist/logo', to: 'watchlist#logo'
 end
