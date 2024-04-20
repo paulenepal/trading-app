@@ -1,21 +1,18 @@
 class Admin::UserTransactionsController < ApplicationController
-  before_action :authenticate_admin
+  before_action :check_authorization
 
-  # Placeholder for Admin User Story #7
-  # Need serializer for User Transactions
-  # def index
-  #   @user_transactions = UserTransaction.all
-  #   render json: {
-  #     status: {code: 200, message: 'All User Transactions retrieved successfully.'},
-  #     data: @user_transactions.map { |transaction| UserTransactionSerializer.new(transaction).serializable_hash[:data][:attributes] }
-  #   }
-  # end
+  # GET admin/user_transactions
+  def index
+    @user_transactions = Transaction.all
+    render json: {
+      status: {code: 200, message: 'All User Transactions retrieved successfully.'},
+      data: @user_transactions.map { |transaction| TransactionSerializer.new(transaction).serializable_hash[:data][:attributes] }
+    }
+  end
 
   private
 
-  def authenticate_admin
-    unless current_user.admin?
-      render json: { error: 'Access denied' }, status: :forbidden
-    end
+  def check_authorization
+    raise User::NotAuthorized unless current_user.admin?
   end
 end

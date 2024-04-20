@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-  before_action :authenticate_admin
+  before_action :check_authorization
   before_action :set_user, only: [:show, :update]
 
   # chore: refactor responses [keep your code DRY]
@@ -74,10 +74,8 @@ class Admin::UsersController < ApplicationController
 
   private
 
-  def authenticate_admin
-    unless current_user.admin?
-      render json: { error: 'Access denied' }, status: :forbidden
-    end
+  def check_authorization
+    raise User::NotAuthorized unless current_user.admin?
   end
 
   def set_user
