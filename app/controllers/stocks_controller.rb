@@ -1,5 +1,5 @@
 class StocksController < ApplicationController
-  before_action :authenticate_user!
+  # before action: user auth [fr: applications controller]
 
   # GET /stocks
   def index

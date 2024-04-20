@@ -1,5 +1,5 @@
 class TransactionsController < ApplicationController
-  before_action :authenticate_user!
+  # before action: user auth [fr: applications controller]
 
   def buy
     transaction = Transaction.buy_shares!(current_user, transaction_params)

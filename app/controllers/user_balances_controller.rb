@@ -1,5 +1,5 @@
 class UserBalancesController < ApplicationController
-  before_action :authenticate_user!
+  # before action: user auth [fr: applications controller]
   before_action :check_authorization
 
   # GET /user_balances/first_time_free_deposit
