@@ -22,4 +22,8 @@ class IexStockService
   def self.fetch_logo(symbol)
     @client.logo(symbol)
   end
+
+  def self.fetch_chart(symbol)
+    @client.chart(symbol, '1m', chart_close_only: true)
+  end
 end
