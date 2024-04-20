@@ -4,13 +4,23 @@ class TransactionsController < ApplicationController
   # GET /transactions/index
   def index
     transactions = current_user.transactions.order(created_at: :desc)
+    
+    if (transactions == [])
+      return render json: { message: 'No transactions found' }, status: :not_found
+    end
+
     render json: TransactionSerializer.new(transactions).serializable_hash
   end
 
   # GET /transactions/show
   def show
+    # if user does not own the transaction, return 404
     transaction = current_user.transactions.find(params[:id])
+
     render json: TransactionSerializer.new(transaction).serializable_hash
+
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { message: 'Transaction not found' }, status: :not_found
   end
 
   # POST /transactions/buy
