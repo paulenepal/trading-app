@@ -25,8 +25,13 @@ class TransactionsController < ApplicationController
 
   # POST /transactions/buy
   def buy
-    transaction = Transaction.buy_shares!(current_user, transaction_params)
-    
+    quote_data = IexStockService.fetch_quote(transaction_params[:symbol])
+    @latest_price = quote_data.latest_price
+
+    transaction_params_price_merge = transaction_params.merge(price: @latest_price)
+
+    transaction = Transaction.buy_shares!(current_user, transaction_params_price_merge)
+
     if transaction
       render json: {
         status: { code: 200, message: 'Successfully added shares to assets' },
