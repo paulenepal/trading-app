@@ -34,8 +34,10 @@ Rails.application.routes.draw do
   resources :user_balances do
     get 'index', on: :collection
     get 'show', on: :collection
+    get 'transactions', on: :collection
     post 'add_balance', on: :collection
     post 'withdraw_balance', on: :collection
+    get 'investment', on: :collection
   end
 
   resources :stocks, only: [:index, :show] do
