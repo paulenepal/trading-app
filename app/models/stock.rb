@@ -30,13 +30,7 @@ class Stock < ApplicationRecord
     number_to_currency(avg)
   end
 
-  before_save :update_latest_price
-
   private
-
-  def update_latest_price
-    self.latest_price = fetch_latest_price if symbol.present?
-  end
 
   def average_buy(symbol)
     transactions = Transaction.where(symbol: symbol)
