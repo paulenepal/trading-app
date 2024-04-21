@@ -2,16 +2,16 @@ class UserBalancesController < ApplicationController
   before_action :authenticate_user!
   before_action :check_authorization
 
-  # GET /user_balances/first_time_free_deposit
-  # def first_time_free_deposit
-  #   current_user.balance += 10000
-  #   current_user.save!
-  # end
+  # TODO:
+  # Add transaction type to keep track of deposits and withdrawals
 
   # GET /user_balances
   def index
-    transactions = current_user.transactions
-    render json: TransactionSerializer.new(transactions).serializable_hash
+    balance = BigDecimal(current_user.balance)
+    render json: {
+      status: { code: 200, message: 'Success' },
+      data: { balance: balance }
+    }
   end
 
   # GET /user_balances/{id}
@@ -20,24 +20,26 @@ class UserBalancesController < ApplicationController
     render json: TransactionSerializer.new(transaction).serializable_hash
   end
 
-  # POST /user_balances/add_balance
+  # POST /user_balances/withdraw_balance?amount=5000
   def add_balance
-    current_user.balance += params[:balance]
+    current_user.balance += BigDecimal(params[:amount])
     current_user.save!
-
     render json: {
-      status: { code: 200, message: 'Successfully added balance to assets' },
+      status: { code: 200, message: "Successfully deposited #{params[:amount]} to account." },
       data: UserSerializer.new(current_user).serializable_hash[:data][:attributes]
     }
   end
 
-  # POST /user_balances/deduct_balance
-  def deduct_balance
-    current_user.balance -= params[:balance]
+  # POST /user_balances/withdraw_balance?amount=5000
+  def withdraw_balance
+    if current_user.balance < BigDecimal(params[:amount])
+      render json: { message: 'Insufficient balance' }, status: :unprocessable_entity
+      return
+    end
+    current_user.balance -= BigDecimal(params[:amount])
     current_user.save!
-
     render json: {
-      status: { code: 200, message: 'Successfully deducted balance from assets' },
+      status: { code: 200, message: "Successfully withdrawn #{params[:amount]} from account." },
       data: UserSerializer.new(current_user).serializable_hash[:data][:attributes]
     }
   end
