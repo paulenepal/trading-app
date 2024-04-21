@@ -1,9 +1,22 @@
 class TransactionsController < ApplicationController
   # before action: user auth [fr: applications controller]
 
+  # GET /transactions/index
+  def index
+    transactions = current_user.transactions
+    render json: TransactionSerializer.new(transactions).serializable_hash
+  end
+
+  # GET /transactions/show
+  def show
+    transaction = current_user.transactions.find(params[:id])
+    render json: TransactionSerializer.new(transaction).serializable_hash
+  end
+
+  # POST /transactions/buy
   def buy
     transaction = Transaction.buy_shares!(current_user, transaction_params)
-
+    
     if transaction
       render json: {
         status: { code: 200, message: 'Successfully added shares to assets' },
@@ -16,8 +29,13 @@ class TransactionsController < ApplicationController
     render json: { message: e.message }, status: :unprocessable_entity
   end
 
+  # POST /transactions/sell
   def sell
-    transaction = Transaction.sell_shares!(current_user, transaction_attributes)
+    if current_user.transactions.where(symbol: transaction_params[:symbol]).sum(:quantity) < transaction_params[:quantity]
+      return render json: { message: 'Insufficient shares to sell' }, status: :unprocessable_entity
+    end
+
+    transaction = Transaction.sell_shares!(current_user, transaction_params)
 
     if transaction
       render json: {

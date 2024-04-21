@@ -26,6 +26,8 @@ Rails.application.routes.draw do
   end
 
   resources :transactions do
+    get 'index', on: :collection
+    get 'show', on: :collection
     post 'buy', on: :collection
     post 'sell', on: :collection
   end
