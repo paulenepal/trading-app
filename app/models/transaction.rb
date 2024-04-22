@@ -59,4 +59,30 @@ class Transaction < ApplicationRecord
     Rails.logger.error("Error Selling Shares: #{e.message}")
     raise
   end
+
+  def self.add_balance!(current_user, transaction_attributes, amount)
+    ActiveRecord::Base.transaction do
+      transaction = current_user.transactions.build(transaction_attributes)
+      transaction.price = amount
+      transaction.quantity = 1
+      transaction.transaction_type = 2
+      transaction.symbol = 'USD'
+      transaction.save!
+
+      transaction
+    end
+  end
+
+  def self.withdraw_balance!(current_user, transaction_attributes, amount)
+    ActiveRecord::Base.transaction do
+      transaction = current_user.transactions.build(transaction_attributes)
+      transaction.price = amount
+      transaction.quantity = 1
+      transaction.transaction_type = 3
+      transaction.symbol = 'USD'
+      transaction.save!
+      
+      transaction
+    end
+  end
 end
