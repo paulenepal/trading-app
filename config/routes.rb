@@ -44,4 +44,7 @@ Rails.application.routes.draw do
   end
 
   get 'watchlist', to: 'watchlist#index'
+
+  get 'user/:id', to: 'user#show'
+
 end
