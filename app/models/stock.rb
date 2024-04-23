@@ -1,4 +1,6 @@
 class Stock < ApplicationRecord
+  include ActiveSupport::NumberHelper
+
   belongs_to :user
 
   scope :search_by_symbol, -> (symbol) {
@@ -10,35 +12,34 @@ class Stock < ApplicationRecord
     avg_buy = average_buy(symbol)
     return if avg_buy.nil? || latest_price.nil?
 
-    ((avg_buy * quantity) - (latest_price * quantity)).round(2)
+    loss = (latest_price * self.quantity) - (avg_buy * self.quantity)
+    number_to_currency(loss)
   end
 
   def value
-    (latest_price * quantity).round(2)
+    number_to_currency(latest_price * self.quantity)
   end
 
   def latest_price
-    @client = IEX::Api::Client.new
-    @quote_data = @client.quote(symbol)
-    latest_price = @quote_data.latest_price
+    quote_data = IexStockService.fetch_quote(symbol)
+    latest_price = quote_data.latest_price
   end
 
-  before_save :update_latest_price
+  def ave_buy
+    avg = average_buy(symbol)
+    number_to_currency(avg)
+  end
 
   private
-
-  def update_latest_price
-    self.latest_price = fetch_latest_price if symbol.present?
-  end
 
   def average_buy(symbol)
     transactions = Transaction.where(symbol: symbol)
     return nil if transactions.empty?
 
-    total_price = transactions.sum(:price)
+    total_amount = transactions.sum(:total_amount)
     total_quantity = self.quantity
   
-    total_price / total_quantity.to_f
+    total_amount / total_quantity
   end
 
 end

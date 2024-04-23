@@ -1,5 +1,5 @@
 class Admin::UserApprovalsController < ApplicationController
-  before_action :authenticate_admin
+  before_action :check_authorization
 
   # GET "/admin/user_approvals"
   def index
@@ -26,10 +26,8 @@ class Admin::UserApprovalsController < ApplicationController
 
   private
 
-  def authenticate_admin
-    unless current_user.admin?
-      render json: { error: 'Access denied' }, status: :forbidden
-    end
+  def check_authorization
+    raise User::NotAuthorized unless current_user.admin?
   end
 
 end

@@ -10,4 +10,20 @@ class IexStockService
   def self.fetch_quote(symbol)
     @client.quote(symbol)
   end
+
+  def self.fetch_ohlc(symbol)
+    @client.ohlc(symbol)
+  end
+
+  def self.fetch_historical_prices(symbol)
+    @client.historical_prices(symbol, {range: '5d'})
+  end
+
+  def self.fetch_logo(symbol)
+    @client.logo(symbol)
+  end
+
+  def self.fetch_chart(symbol)
+    @client.chart(symbol, '1m', chart_close_only: true)
+  end
 end

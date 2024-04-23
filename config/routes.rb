@@ -22,9 +22,12 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :user_approvals
+    resources :user_transactions
   end
 
   resources :transactions do
+    get 'index', on: :collection
+    get 'show', on: :collection
     post 'buy', on: :collection
     post 'sell', on: :collection
   end
@@ -32,15 +35,18 @@ Rails.application.routes.draw do
   resources :user_balances do
     get 'index', on: :collection
     get 'show', on: :collection
+    get 'transactions', on: :collection
     post 'add_balance', on: :collection
-    post 'deduct_balance', on: :collection
+    post 'withdraw_balance', on: :collection
+    get 'investment', on: :collection
   end
 
   resources :stocks, only: [:index, :show] do
     post 'search', on: :collection
   end
 
-  # IEX test routes
-  get 'watchlist/:symbol', to: 'watchlist#show'
+  get 'watchlist', to: 'watchlist#index'
+
+  get 'user/:id', to: 'user#show'
 
 end

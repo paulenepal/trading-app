@@ -5,6 +5,8 @@ class Transaction < ApplicationRecord
   validates :quantity, numericality: { greater_than: 0 }
   validates :price, numericality: { greater_than: 0 }
 
+  enum transaction_type: { share_buy: 0, share_sell: 1, add_balance: 2, deduct_balance: 3}
+
   # TODO :
   # Cannot transact if user is not yet approved
 
@@ -37,12 +39,50 @@ class Transaction < ApplicationRecord
 
   def self.sell_shares!(current_user, transaction_attributes)
     ActiveRecord::Base.transaction do 
-      current_user.transactions.create!(transaction_attributes)
+      total_amount = transaction_attributes[:quantity] * transaction_attributes[:price]
+      transaction = current_user.transactions.build(transaction_attributes)
+      transaction.total_amount = total_amount
+      transaction.save!
 
       stock = current_user.stocks.find_or_initialize_by(symbol: transaction_attributes[:symbol])
+
       stock.quantity -= transaction_attributes[:quantity]
       stock.save!
+
+      current_user.balance += total_amount
+      current_user.save!
+
+      transaction
+    end
+
+  rescue ActiveRecord::RecordInvalid => e
+    Rails.logger.error("Error Selling Shares: #{e.message}")
+    raise
+  end
+
+  def self.add_balance!(current_user, transaction_attributes, amount)
+    ActiveRecord::Base.transaction do
+      transaction = current_user.transactions.build(transaction_attributes)
+      transaction.price = amount
+      transaction.quantity = 1
+      transaction.transaction_type = 2
+      transaction.symbol = 'USD'
+      transaction.save!
+
+      transaction
     end
   end
 
+  def self.withdraw_balance!(current_user, transaction_attributes, amount)
+    ActiveRecord::Base.transaction do
+      transaction = current_user.transactions.build(transaction_attributes)
+      transaction.price = amount
+      transaction.quantity = 1
+      transaction.transaction_type = 3
+      transaction.symbol = 'USD'
+      transaction.save!
+      
+      transaction
+    end
+  end
 end
