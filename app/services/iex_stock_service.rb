@@ -26,4 +26,8 @@ class IexStockService
   def self.fetch_chart(symbol)
     @client.chart(symbol, '1m', chart_close_only: true)
   end
+
+  def self.fetch_news(symbol)
+    @client.news(symbol, 5)
+  end
 end

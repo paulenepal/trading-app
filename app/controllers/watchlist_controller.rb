@@ -18,7 +18,7 @@ class WatchlistController < ApplicationController
         latest_price: quote_data.latest_price,
         company_name: quote_data.company_name,
         logo: logos.url,
-        chart: charts.first
+        chart: charts
       }
     end
 
@@ -35,6 +35,7 @@ class WatchlistController < ApplicationController
       historical_prices = IexStockService.fetch_historical_prices(symbol)
       logos = IexStockService.fetch_logo(symbol)
       charts = IexStockService.fetch_chart(symbol)
+      news = IexStockService.fetch_news(symbol)
   
       render json: {
         symbol: symbol,
@@ -46,9 +47,10 @@ class WatchlistController < ApplicationController
           high: ohlc_data.high,
           low: ohlc_data.low
         },
-        historical_prices: historical_prices.first,
+        historical_prices: historical_prices,
         logo: logos.url,
-        chart: charts.first
+        chart: charts,
+        news: news.first
       }
     rescue StandardError => e
       render json: { error_message: "Failed to fetch symbol details: #{e.message}" }, status: :internal_server_error
