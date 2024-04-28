@@ -15,9 +15,6 @@ class User < ApplicationRecord
          :confirmable, :jwt_authenticatable, jwt_revocation_strategy: self
 
   enum role: { pending_trader: 0, trader: 1, admin: 2 }
-  # trader = approved trader
-  # feat: if may approved trader, do we need to include rejected traders here sa role?
-  # or covered na ng pending trader? 
 
   scope :pending, -> { where(role: :pending_trader, confirmed_email: :true) }
 
