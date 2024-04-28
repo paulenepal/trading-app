@@ -33,10 +33,10 @@ class Admin::UsersController < ApplicationController
   def create
     new_user = User.new(user_params)
     new_user.password = Rails.application.credentials.user[:default_password]
-    new_user.skip_confirmation!  # skips confirmation if user was created by Admin
     new_user.role = :trader # sets role to trader automatically
 
     if new_user.save
+      new_user.update!(confirmed_at: Time.current)
       UserMailer.welcome_email(new_user).deliver_now
       render json: {
         status: {code: 200, message: 'Signed up successfully.'},
@@ -79,7 +79,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def set_user
-    user = User.find(params[:id])
+    @user = User.find(params[:id])
   end
 
   def user_params
