@@ -16,6 +16,8 @@ class WatchlistController < ApplicationController
       @watchlist_data << {
         symbol: symbol,
         latest_price: quote_data.latest_price,
+        change: quote_data.change,
+        change_percent: quote_data.change_percent_s,
         company_name: quote_data.company_name,
         logo: logos.url,
         chart: charts
@@ -40,6 +42,8 @@ class WatchlistController < ApplicationController
       render json: {
         symbol: symbol,
         latest_price: quote_data.latest_price,
+        change: quote_data.change,
+        change_percent: quote_data.change_percent_s,
         company_name: quote_data.company_name,
         ohlc: {
           close: ohlc_data.close,
