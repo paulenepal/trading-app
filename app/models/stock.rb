@@ -4,8 +4,8 @@ class Stock < ApplicationRecord
   belongs_to :user
 
   scope :search_by_symbol, -> (symbol) {
-    sanitized_symbol = sanitize_sql_like(symbol)
-    where("symbol ILIKE ?", "%#{sanitized_symbol}%")
+    sanitized_symbol = sanitize_sql_like(symbol.downcase)
+    where("LOWER(symbol) LIKE ?", "%#{sanitized_symbol}%")
   }
 
   def profit_loss
@@ -23,6 +23,7 @@ class Stock < ApplicationRecord
   def latest_price
     quote_data = IexStockService.fetch_quote(symbol)
     latest_price = quote_data.latest_price
+    latest_price
   end
 
   def ave_buy
