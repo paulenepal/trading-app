@@ -16,7 +16,7 @@ class IexStockService
   end
 
   def self.fetch_historical_prices(symbol)
-    @client.historical_prices(symbol, {range: '5d'})
+    @client.historical_prices(symbol, {range: '1m'})
   end
 
   def self.fetch_logo(symbol)

@@ -19,7 +19,8 @@ module CachedStockFetchers
       change: fetch_cached_quote(symbol).change,
       change_percent: fetch_cached_quote(symbol).change_percent_s,
       logo: fetch_cached_logo(symbol).url,
-      chart: fetch_cached_chart(symbol)
+      chart: fetch_cached_chart(symbol),
+      ohlc: fetch_cached_ohlc(symbol)
     }
   end
 
