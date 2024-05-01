@@ -23,9 +23,9 @@ class StocksController < ApplicationController
     }
   end
 
-  # POST /stocks/search
+  # GET /stocks/search?q=
   def search
-    symbol = params[:symbol]
+    symbol = params[:q]
     if symbol.present?
       stocks = current_user.stocks.search_by_symbol(symbol)
       render json: {
