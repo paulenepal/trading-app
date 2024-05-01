@@ -42,12 +42,11 @@ Rails.application.routes.draw do
   end
 
   resources :stocks, only: [:index, :show] do
-    post 'search', on: :collection
+    get 'search', on: :collection
   end
 
   get 'watchlist', to: 'watchlist#index'
   get 'watchlist/:symbol', to: 'watchlist#show'
-
   get 'user/:id', to: 'user#show'
 
 end
