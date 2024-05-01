@@ -31,4 +31,17 @@ class WatchlistController < ApplicationController
     render json: { error_message: "Failed to fetch symbol details: #{e.message}" }, status: :internal_server_error
   end
 
+  def top
+    @watchlist_data = Rails.cache.fetch("watchlist/top", expires_in: CACHE_EXP_QUOTE) do
+      fetch_watchlist_data
+    end
+
+    top_watchlist = @watchlist_data.sort_by { |stock| stock[:change_percent] }.first(10)
+    sorted_top_watchlist = top_watchlist.sort_by { |stock| stock[:change_percent] }.reverse
+
+    render json: sorted_top_watchlist
+  rescue StandardError => e
+    render json: { error_message: "Failed to fetch symbol details: #{e.message}" }, status: :internal_server_error
+  end
+
 end
