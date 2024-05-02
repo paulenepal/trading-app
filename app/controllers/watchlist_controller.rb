@@ -44,4 +44,18 @@ class WatchlistController < ApplicationController
     render json: { error_message: "Failed to fetch symbol details: #{e.message}" }, status: :internal_server_error
   end
 
+  def news
+    # @news = fetch_cached_news()
+    # map news from data/stock_symbols.json 
+
+    symbolData = JSON.parse(File.read('data/stock_symbols.json'))
+    @news = symbolData.map do |symbol|
+      fetch_cached_news(symbol['symbol']).first
+    end
+    
+    render json: @news
+  rescue StandardError => e
+    render json: { error_message: "Failed to fetch symbol news: #{e.message}" }, status: :internal_server_error
+  end
+
 end
