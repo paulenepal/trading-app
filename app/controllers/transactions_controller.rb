@@ -1,6 +1,8 @@
 class TransactionsController < ApplicationController
   # before action: user auth [fr: applications controller]
 
+  include CachedStockFetchers
+  
   # GET /transactions
   def index
     transactions = current_user.transactions.order(created_at: :desc)
@@ -8,8 +10,14 @@ class TransactionsController < ApplicationController
     if (transactions == [])
       return render json: { message: 'No transactions found' }, status: :not_found
     end
-
-    render json: TransactionSerializer.new(transactions).serializable_hash
+    logos = transactions.map { |transaction| {
+      symbol: transaction.symbol,
+      logo: fetch_cached_logo(transaction.symbol).url
+    } }.uniq { |transaction| transaction[:symbol] }
+    render json: {
+      transactions: TransactionSerializer.new(transactions).serializable_hash,
+      logo: logos
+    }
   end
 
   # GET /transactions/show
