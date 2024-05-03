@@ -20,10 +20,14 @@ class WatchlistController < ApplicationController
       change: fetch_cached_quote(symbol).change,
       change_percent: fetch_cached_quote(symbol).change_percent_s,
       logo: fetch_cached_logo(symbol).url,
-      ohlc: fetch_cached_ohlc(symbol),
       historical_prices: fetch_cached_historical_prices(symbol),
       chart: fetch_cached_chart(symbol),
-      news: fetch_cached_news(symbol).first
+      news: fetch_cached_news(symbol).first,
+      ceo: fetch_cached_company(symbol).ceo,
+      description: fetch_cached_company(symbol).description,
+      employees: fetch_cached_company(symbol).employees,
+      website: fetch_cached_company(symbol).website,
+      exchange: fetch_cached_company(symbol).exchange
     }
     
     render json: @stock_data

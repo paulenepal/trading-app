@@ -20,7 +20,11 @@ module CachedStockFetchers
       change_percent: fetch_cached_quote(symbol).change_percent_s,
       logo: fetch_cached_logo(symbol).url,
       chart: fetch_cached_chart(symbol),
-      ohlc: fetch_cached_ohlc(symbol)
+      ceo: fetch_cached_company(symbol).ceo,
+      description: fetch_cached_company(symbol).description,
+      employees: fetch_cached_company(symbol).employees,
+      website: fetch_cached_company(symbol).website,
+      exchange: fetch_cached_company(symbol).exchange
     }
   end
 
@@ -57,6 +61,12 @@ module CachedStockFetchers
   def fetch_cached_news(symbol)
     Rails.cache.fetch("#{symbol}/news", expires_in: CACHE_EXP_NEWS) do
       IexStockService.fetch_news(symbol)
+    end
+  end
+
+  def fetch_cached_company(symbol)
+    Rails.cache.fetch("#{symbol}/company", expires_in: CACHE_EXP_NEWS) do
+      IexStockService.fetch_company(symbol)
     end
   end
 
