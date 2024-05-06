@@ -8,6 +8,8 @@ class Stock < ApplicationRecord
     where("LOWER(symbol) LIKE ?", "%#{sanitized_symbol}%")
   }
 
+  scope :valid_assets, -> { where('quantity >= 1') }
+
   def profit_loss
     avg_buy = average_buy(symbol)
     return if avg_buy.nil? || latest_price.nil?
