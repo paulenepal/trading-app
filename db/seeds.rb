@@ -30,10 +30,10 @@ if admin.save
 end
 
 user000 = User.new(
-  email: 'user0005@app.com',
+  email: 'user0006@app.com',
   password: 'Test1234!', # Set your desired password here
   password_confirmation: 'Test1234!', # Confirm the password
-  username: 'user0_trader5',
+  username: 'user0_trader6',
   first_name: 'User',
   last_name: '000',
   birthday: '1990-01-01',
@@ -42,7 +42,7 @@ user000 = User.new(
 )
 
 # user000.skip_confirmation_notification! # Skip sending confirmation email
-if user000.save!
-  user000.confirm
+if user000.save
+  user000.update!(confirmed_at: Time.current)
   puts 'User000 user created successfully.'
 end
