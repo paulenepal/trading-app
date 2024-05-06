@@ -1,13 +1,19 @@
 class StocksController < ApplicationController
   # before action: user auth [fr: applications controller]
+  include CachedStockFetchers
 
   # GET /stocks
   def index
-    stocks = current_user.stocks
+    stocks = current_user.stocks.valid_assets
+    logos = stocks.map { |stock| {
+      symbol: stock.symbol,
+      logo: fetch_cached_logo(stock.symbol).url
+    } }.uniq { |stock| stock[:symbol] }
     if stocks.any?
       render json: {
         status: { code: 200, message: 'Assets successfully retrieved!' },
-        data: stocks.map { |stock| StockSerializer.new(stock).serializable_hash[:data][:attributes] }
+        data: stocks.map { |stock| StockSerializer.new(stock).serializable_hash[:data][:attributes] },
+        logo: logos
       }
     else
       render json: { message: 'User has no assets' }
