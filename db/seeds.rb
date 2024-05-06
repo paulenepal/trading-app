@@ -12,12 +12,12 @@
 # Admin User
 
 admin = User.new(
-  email: 'testadmin2@app.com',
+  email: 'stonktrails.io@gmail.com',
   password: 'Test1234!', # Set your desired password here
   password_confirmation: 'Test1234!', # Confirm the password
-  username: 'trails_admin6',
-  first_name: 'Trails',
-  last_name: 'Admin',
+  username: 'trails.admin',
+  first_name: 'Michael',
+  last_name: 'Jordan',
   birthday: '1990-01-01',
   role: 2,
   # confirmed_at: Time.current # Automatically confirm the account
@@ -38,7 +38,7 @@ user000 = User.new(
   last_name: '000',
   birthday: '1990-01-01',
   role: 1,
-  confirmed_at: Time.current # Automatically confirm the account
+  # confirmed_at: Time.current # Automatically confirm the account
 )
 
 # user000.skip_confirmation_notification! # Skip sending confirmation email
