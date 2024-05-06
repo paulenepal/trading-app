@@ -12,35 +12,37 @@
 # Admin User
 
 admin = User.new(
-  email: 'admin@app.com',
-  password: 'admin1234', # Set your desired password here
-  password_confirmation: 'admin1234', # Confirm the password
-  username: 'admin',
-  first_name: 'Admin',
-  last_name: 'User',
+  email: 'testadmin2@app.com',
+  password: 'Test1234!', # Set your desired password here
+  password_confirmation: 'Test1234!', # Confirm the password
+  username: 'trails_admin6',
+  first_name: 'Trails',
+  last_name: 'Admin',
   birthday: '1990-01-01',
   role: 2,
-  confirmed_at: Time.now # Automatically confirm the account
+  # confirmed_at: Time.current # Automatically confirm the account
 )
 
-admin.skip_confirmation_notification! # Skip sending confirmation email
-admin.save!
-
-puts 'Admin user created successfully.'
+# admin.skip_confirmation_notification! # Skip sending confirmation email
+if admin.save
+  admin.update!(confirmed_at: Time.current)
+  puts 'Admin user created successfully.'
+end
 
 user000 = User.new(
-  email: 'user000@app.com',
-  password: '1234567', # Set your desired password here
-  password_confirmation: '1234567', # Confirm the password
-  username: 'user000',
+  email: 'user0005@app.com',
+  password: 'Test1234!', # Set your desired password here
+  password_confirmation: 'Test1234!', # Confirm the password
+  username: 'user0_trader5',
   first_name: 'User',
   last_name: '000',
   birthday: '1990-01-01',
   role: 1,
-  confirmed_at: Time.now # Automatically confirm the account
+  confirmed_at: Time.current # Automatically confirm the account
 )
 
-user000.skip_confirmation_notification! # Skip sending confirmation email
-user000.save!
-
-puts 'User000 user created successfully.'
+# user000.skip_confirmation_notification! # Skip sending confirmation email
+if user000.save!
+  user000.confirm
+  puts 'User000 user created successfully.'
+end
