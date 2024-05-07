@@ -30,4 +30,9 @@ class IexStockService
   def self.fetch_news(symbol)
     @client.news(symbol, 5)
   end
+
+  def self.fetch_company(symbol)
+    @client.company(symbol)
+  end
+  
 end

@@ -1,8 +1,199 @@
-<p>Welcome <%= @resource.first_name %>!</p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Email Confirmation Notice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+      * {
+         /* outline: 1px solid red; */
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        background-color: #cfcaca44;
+      }
 
-<p>You can confirm your account email through the link below:</p>
+      .container {
+        max-width: 80%;
+        margin: 20px auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+      .table-1 {
+        width: 100%;
+        border-collapse: collapse;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
 
-<p>Best regards,</p>
-<p>IO Team</p>
+      .table-1-r1 td:first-child {
+        width: 100%;
+        padding: 25px;
+        background-color: #4ECAAB;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+
+      .table-1-r2 {
+        width: 100%;
+        background-color: #4ECAAB;
+        color: #fff;
+        
+      }
+
+      .table-2 {
+        width: 70%;
+        margin: 0 auto;
+        background-color: white;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+
+      .table-2 tr:first-child td:first-child {
+        width: 100%;
+      }
+
+      .table-2 tr:nth-child(2) td:first-child {
+        text-align: center;
+        background-color: white;
+      }
+
+      .table-2-r2 td:first-child {
+        color: black;
+        font-size: 2rem;
+        padding-bottom: 1rem;
+      }
+
+      .table-1 tr:nth-child(3) {
+        width: 100%;
+        color: black;
+      }
+
+      .table-3 {
+        width: 70%;
+        margin: 0 auto;
+        color: black;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        padding: 15px;
+      }
+
+      .table-1-r3, .table-1-r4, .table-1-r5 {
+        background-color: white;
+      }
+
+      .table-1-r4 td:first-child {
+        margin-bottom: 50px;
+        padding-bottom: 25px;
+      }
+
+      .table-1-r5 {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+
+      .table-1-r5 td:first-child {
+        margin-bottom: 50px;
+        padding-bottom: 25px;
+      }
+
+      .footer {
+        width: 70%;
+        margin: 10px auto;
+        text-align: center;
+        padding: 10px 0;
+        /* background-color: #c4eb47; */
+        background-color: #4ECAAB;
+        border-radius: 10px;
+        font-weight: bold;
+      }
+
+      .footer-2 {
+        width: 100%;
+        margin: 10px auto;
+        text-align: center;
+        background-color: #cfcaca;
+        padding: 15px 0;
+      }
+
+      .logo {
+        padding: 20px 10px;
+        width: 10%;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <table class="table-1">
+
+        <tr class="table-1-r1">
+          <td></td>
+        </tr>
+
+        <tr class="table-1-r2">
+          <td>
+
+            <table class="table-2">
+              <tr>
+                <td style="text-align: center; color: black">
+                  Your email needs confirmation.
+                <td>
+              </tr>
+              <tr class="table-2-r2" style="text-align: center; font-size: 2rem;">
+                <td style="color: black">t<span style="color: #4ECAAB">rails</span>.<span style="color: black">io</span>!</td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+
+        <tr class="table-1-r3">
+          <td>
+
+            <table class="table-3">
+              <tr>
+                <td><p>Welcome <%= @resource.first_name %>!</p></td>
+              </tr>
+              <tr>
+                <td style="padding-top: 25px">You can confirm your account email through the link below:</td>
+              </tr>
+              <tr>
+                <td style="padding-top: 25px"><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></td>
+              </tr>
+              <tr>
+                <td style="padding-top: 25px">
+                  Best regards, <br />
+                  Trails Team
+                </td>
+            </table>
+
+          </td>
+        </tr>
+
+        <tr class="table-1-r4">
+          <td>
+            <div class="footer">
+              <p>Your Gateway to Smarter Trading</p>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="table-1-r5">
+          <td>
+            <div class="footer-2">
+              <p>Trails.io | 123 Street Philippines | +634 321 0000</p>
+            </div>
+          </td>
+        </tr>
+
+      </table>
+      
+    </div>
+
+  </body>
+</html>

@@ -6,7 +6,7 @@ class Admin::UsersController < ApplicationController
 
   # GET "/admin/users"
   def index
-    users = User.all
+    users = User.traders
     render json: {
       status: {code: 200, message: 'Traders retrieved successfully.'},
       data: users.map { |user| UserSerializer.new(user).serializable_hash[:data][:attributes] }

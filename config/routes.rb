@@ -7,7 +7,8 @@ Rails.application.routes.draw do
   },
   controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    confirmations: 'users/confirmations'
   },
   defaults: { format: :json }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -45,8 +46,11 @@ Rails.application.routes.draw do
     get 'search', on: :collection
   end
 
+  get 'watchlist/top', to: 'watchlist#top'
+  get 'watchlist/news', to: 'watchlist#news'
   get 'watchlist', to: 'watchlist#index'
   get 'watchlist/:symbol', to: 'watchlist#show'
-  get 'user/:id', to: 'user#show'
 
+  get 'user/:id', to: 'user#show'
+  
 end

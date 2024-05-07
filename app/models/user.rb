@@ -17,6 +17,7 @@ class User < ApplicationRecord
   enum role: { pending_trader: 0, trader: 1, admin: 2 }
 
   scope :pending, -> { where(role: :pending_trader, confirmed_email: :true) }
+  scope :traders, -> { where(role: ['pending_trader', 'trader']) }
 
   validates :email, :first_name, :last_name, :birthday, presence: true
   validates :username, presence: true, uniqueness: true

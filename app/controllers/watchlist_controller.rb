@@ -20,10 +20,14 @@ class WatchlistController < ApplicationController
       change: fetch_cached_quote(symbol).change,
       change_percent: fetch_cached_quote(symbol).change_percent_s,
       logo: fetch_cached_logo(symbol).url,
-      ohlc: fetch_cached_ohlc(symbol),
       historical_prices: fetch_cached_historical_prices(symbol),
       chart: fetch_cached_chart(symbol),
-      news: fetch_cached_news(symbol).first
+      news: fetch_cached_news(symbol).first,
+      ceo: fetch_cached_company(symbol).ceo,
+      description: fetch_cached_company(symbol).description,
+      employees: fetch_cached_company(symbol).employees,
+      website: fetch_cached_company(symbol).website,
+      exchange: fetch_cached_company(symbol).exchange
     }
     
     render json: @stock_data
@@ -42,6 +46,20 @@ class WatchlistController < ApplicationController
     render json: sorted_top_watchlist
   rescue StandardError => e
     render json: { error_message: "Failed to fetch symbol details: #{e.message}" }, status: :internal_server_error
+  end
+
+  def news
+    # @news = fetch_cached_news()
+    # map news from data/stock_symbols.json 
+
+    symbolData = JSON.parse(File.read('data/stock_symbols.json'))
+    @news = symbolData.map do |symbol|
+      fetch_cached_news(symbol['symbol']).first
+    end
+    
+    render json: @news
+  rescue StandardError => e
+    render json: { error_message: "Failed to fetch symbol news: #{e.message}" }, status: :internal_server_error
   end
 
 end

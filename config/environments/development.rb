@@ -35,7 +35,11 @@ Rails.application.configure do
 
   # Don't care if the mailer can't send.
   # USING DEVISE
-  config.action_mailer.raise_delivery_errors = false
+  config.active_record.dump_schema_after_migration = false
+
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.perform_deliveries = true
 
   config.action_mailer.default_url_options = { 
     host: 'localhost', 
@@ -43,8 +47,15 @@ Rails.application.configure do
   }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :address => "localhost", 
-    :port => 1025
+    address: Rails.application.credentials.smtp[:address], 
+    port: Rails.application.credentials.smtp[:port],
+    domain: Rails.application.credentials.smtp[:gmail],
+    user_name: Rails.application.credentials.smtp[:user_name],
+    password: Rails.application.credentials.smtp[:password],
+    authentication: Rails.application.credentials.smtp[:authentication],
+    enable_starttls: Rails.application.credentials.smtp[:enable_starttls],
+    open_timeout: Rails.application.credentials.smtp[:open_timeout],
+    read_timeout: Rails.application.credentials.smtp[:read_timeout]
   }
 
   config.action_mailer.perform_caching = false
