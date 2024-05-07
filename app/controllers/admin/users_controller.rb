@@ -1,7 +1,5 @@
 class Admin::UsersController < ApplicationController
   before_action :check_authorization
-  before_action :set_user, only: [:show, :update]
-
   # chore: refactor responses [keep your code DRY]
 
   # GET "/admin/users"
@@ -17,7 +15,7 @@ class Admin::UsersController < ApplicationController
 
   # GET "/admin/users/:id"
   def show
-    # before action here
+    user = User.find(params[:id])
     render json: {
       status: {code: 200, message: 'User details retrieved successfully.'},
       data: UserSerializer.new(user).serializable_hash[:data][:attributes]
@@ -54,7 +52,7 @@ class Admin::UsersController < ApplicationController
 
   # PATCH "/admin/users/:id"
   def update
-    # before action here
+    user = User.find(params[:id])
     if user.update(user_params)
       render json: {
         status: {code: 200, message: 'User details updated successfully.'},
@@ -76,10 +74,6 @@ class Admin::UsersController < ApplicationController
 
   def check_authorization
     raise User::NotAuthorized unless current_user.admin?
-  end
-
-  def set_user
-    @user = User.find(params[:id])
   end
 
   def user_params
