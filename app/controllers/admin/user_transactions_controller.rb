@@ -3,7 +3,7 @@ class Admin::UserTransactionsController < ApplicationController
 
   # GET admin/user_transactions
   def index
-    @user_transactions = Transaction.all
+    @user_transactions = Transaction.newest_first
     render json: {
       status: {code: 200, message: 'All User Transactions retrieved successfully.'},
       data: @user_transactions.map { |transaction| TransactionSerializer.new(transaction).serializable_hash[:data][:attributes] }

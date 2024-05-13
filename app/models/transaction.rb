@@ -7,6 +7,8 @@ class Transaction < ApplicationRecord
 
   enum transaction_type: { share_buy: 0, share_sell: 1, add_balance: 2, deduct_balance: 3}
 
+  scope :newest_first, -> { order(created_at: :desc) }
+
   # TODO :
   # Cannot transact if user is not yet approved
 
